@@ -2,10 +2,10 @@
 let firstScreen = 0;
 let gameScreen =1;
 let lastScreen =2;
-// let gameOverScreen = 2;
-let seasons = [];
-let currentSeason = 0;
 let bg;
+let bg1, bg2, bg3, bg4;
+let currentBg;
+
 let startButton;
 let ball = true;
 let x = 0;
@@ -13,35 +13,33 @@ let y = 0;
 let xspeed = 5;
 let yspeed = 5;
 let playBall;
-// let playBallX = 20;
-// let playBallY= 20;
-// let playBallSpeed = 1;
 let obstacles= [];
-// let obstacle = null;
-// let obstacleSpeed = 3;
+let elements = [];
 let isGameOver = false;
 let movingBall;
 let obImg;
-let obImg1;
-let obImg2;
-
 let distance;
-
 let song;
+let ballSound;
 
 // Load images
 function preload(){
   bg = loadImage('/images/sky.jpg')
-  seasons[0] = loadImage('/images/winter.jpg');
-  seasons[1] =loadImage('/images/autumn.jpg');
-  seasons[2] = loadImage('/images/spring.jpg');
-  seasons[3] = loadImage('/images/summer.jpg');
+  bg1 = loadImage('/images/winter.jpg');
+  bg2 =loadImage('/images/autumn.jpg');
+  bg3 = loadImage('/images/spring.jpg');
+  bg4 = loadImage('/images/summer.jpg');
   ball = loadImage('/images/beach-ball (1).png');
-  playBall = loadImage('/images/beach-ball.png');
-  obImg = loadImage('/images/leaf.png');
-  obImg1 = loadImage('/images/ice-cream1.png')
+  playBall = loadImage('/images/beach-ball copy.png');
+  obImg = loadImage('/images/cactus.png');
 
   song = loadSound('/sound/magic-in-the-air-43177.mp3');
+  ballSound = loadSound('/sound/mixkit-basketball-ball-hard-hit-2093.wav  ')
+  elementImg1 = loadImage('/images/snow-flake.png')
+  elementImg2 = loadImage('/images/leaf.png')
+  elementImg3 = loadImage('/images/flower (1).png')
+  elementImg4 = loadImage('/images/ice-cream.png');
+  
 }
 
 
@@ -54,7 +52,14 @@ function setup(){
   startButton.position(0, 0,100,100);
   startButton.mousePressed(goToGameScreen);
   movingBall = new movePlayBall();
-song.play();
+  elements.push(new Element1());
+  elements.push(new Element2());
+  elements.push(new Element3());
+  elements.push(new Element4());
+  
+
+  
+// song.play();
 
 
 } //close Setup
@@ -71,7 +76,7 @@ function draw(){
 
   
   } else if (firstScreen === 1) {
-    background(seasons[currentSeason]);
+    background(bg1);
     // image(playBall,playBallX,playBallY,80,80) ;
 
 
@@ -79,13 +84,24 @@ function draw(){
       let obstacle = new Obstacle();
       obstacles.push(obstacle);
     }
-
     for (let i = 0; i < obstacles.length; i++) {
       obstacles[i].show();
       obstacles[i].move();
-    }    
+      
+    }  
+          // elements
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].show();
+      elements[i].move();
+      if (elements[i].x < -50) {
+        elements[i].x = width;
+      }
+    }
 
-    
+
+  
+
+
          // detect collision
     let collided = false;
     for (let i = 0; i < obstacles.length; i++) {
@@ -98,15 +114,16 @@ function draw(){
     }
     if (collided) {
     // console.log('collision');
-    gameover();  
+    // gameover();  
     }
+
     
     drawBoard();
     movingBall.show();
     movingBall.move();
     } else if (firstScreen === 2) {
        // Draw last screen
- }
+  }
 
 }
  // close Draw

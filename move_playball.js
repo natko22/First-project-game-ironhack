@@ -7,9 +7,10 @@ class movePlayBall {
     this.gravity = 3;
   }
 
-  jumb(){
+  jump(){
     if (this.y == boardY -this.r){
       this.vy = -60;
+      ballSound.play(); 
     } 
   }
 
@@ -19,11 +20,11 @@ move(){
   this.y += this.vy;
   this.vy += this.gravity;
   this.y = constrain(this.y, 0, boardY - this.r);
+}
 
 
 
 
-  }
 
 show(){
   image(playBall,this.x,this.y,this.r,this.r)
@@ -33,6 +34,6 @@ show(){
 
   function keyPressed(){
   if (keyCode === 32){
-  movingBall.jumb();
+  movingBall.jump();
   }
   }
