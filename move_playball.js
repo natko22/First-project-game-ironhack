@@ -9,9 +9,10 @@ class movePlayBall {
 
   jumb(){
     if (this.y == boardY -this.r){
-      this.vy = -35;
+      this.vy = -60;
     } 
   }
+
 
 
 move(){
@@ -26,6 +27,7 @@ move(){
 
 show(){
   image(playBall,this.x,this.y,this.r,this.r)
+  
 }}
 
 

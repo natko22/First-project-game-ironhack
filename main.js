@@ -22,7 +22,12 @@ let obstacles= [];
 let isGameOver = false;
 let movingBall;
 let obImg;
+let obImg1;
+let obImg2;
 
+let distance;
+
+let song;
 
 // Load images
 function preload(){
@@ -33,8 +38,10 @@ function preload(){
   seasons[3] = loadImage('/images/summer.jpg');
   ball = loadImage('/images/beach-ball (1).png');
   playBall = loadImage('/images/beach-ball.png');
-  obImg = loadImage('/images/beach-ball (2).png');
+  obImg = loadImage('/images/leaf.png');
+  obImg1 = loadImage('/images/ice-cream1.png')
 
+  song = loadSound('/sound/magic-in-the-air-43177.mp3');
 }
 
 
@@ -47,6 +54,8 @@ function setup(){
   startButton.position(0, 0,100,100);
   startButton.mousePressed(goToGameScreen);
   movingBall = new movePlayBall();
+song.play();
+
 
 } //close Setup
 
@@ -59,6 +68,7 @@ function draw(){
   if (firstScreen === 0) {
     background(bg);
     firstBall();
+
   
   } else if (firstScreen === 1) {
     background(seasons[currentSeason]);
@@ -71,27 +81,38 @@ function draw(){
     }
 
     for (let i = 0; i < obstacles.length; i++) {
-      obstacles[i].display();
+      obstacles[i].show();
       obstacles[i].move();
     }    
 
-
-
     
+         // detect collision
+    let collided = false;
+    for (let i = 0; i < obstacles.length; i++) {
+    let obstacle = obstacles[i];
+    let distance = dist(movingBall.x, movingBall.y, obstacle.x, obstacle.y);
+    if (distance < movingBall.r / 2 + obstacle.size / 2) {
+    collided = true;
+        break;
+      }
+    }
+    if (collided) {
+    // console.log('collision');
+    gameover();  
+    }
     
     drawBoard();
     movingBall.show();
     movingBall.move();
-    // keyPressed();
     } else if (firstScreen === 2) {
        // Draw last screen
-      textSize(64);
-      textAlign(CENTER, CENTER);
-      text("Game Over", width / 2, height / 2);
-    }
+ }
 
 }
  // close Draw
+
+
+
 
 
   function goToGameScreen() {
@@ -99,10 +120,21 @@ function draw(){
     startButton.hide();
     let h1 = document.getElementById("title").style.display = "none";
     ball = false;
+    song.stop();
     // setInterval(nextSeason,2000);
-
-
   }
+
+  function gameover() {
+    background(162, 78, 136);
+    textAlign(CENTER);
+    textStyle(ITALIC);
+    textSize(80);
+    text("Game Over", width/2, height/2);
+    goToGameScreen.hide();
+  }
+  
+
+
 
   // function nextSeason(){
   //   currentSeason++;
